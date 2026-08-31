@@ -20,6 +20,7 @@ from pathlib import Path
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ.setdefault("PYTORCH_ALLOC_CONF", "expandable_segments:True")
 
 REPO = Path("/kaggle/input/specdrift-repo")
 if not (REPO / "specdrift" / "schema.py").exists():
@@ -34,7 +35,7 @@ sys.path.insert(0, str(REPO))
 
 MODEL = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
 EVAL_IDS = ["slugify", "word_wrap", "log_folder", "seat_fill", "bill_split"]  # held out; never trained on
-MAX_STEPS = 300
+MAX_STEPS = 150  # optimizer steps; 8 completions each. Long prompts -> ~80s/step on T4
 NUM_GENERATIONS = 8
 MAX_COMPLETION = 768
 
@@ -130,7 +131,9 @@ torch.cuda.empty_cache()
 
 wanted = dict(
     output_dir=str(WORK / "grpo_out"),
-    per_device_train_batch_size=NUM_GENERATIONS,
+    per_device_train_batch_size=NUM_GENERATIONS // 2,
+    gradient_accumulation_steps=2,   # generation batch stays = NUM_GENERATIONS
+    gradient_checkpointing=True,
     num_generations=NUM_GENERATIONS,
     max_completion_length=MAX_COMPLETION,
     max_steps=MAX_STEPS,
