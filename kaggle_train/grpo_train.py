@@ -33,8 +33,8 @@ print("[data] repo root:", REPO, "->", sorted(p.name for p in REPO.iterdir()))
 sys.path.insert(0, str(REPO))
 
 MODEL = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
-EVAL_IDS = ["slugify", "bank_ledger", "word_wrap"]  # held out; never trained on
-MAX_STEPS = 20      # PILOT run; set ~300 for the real run
+EVAL_IDS = ["slugify", "word_wrap", "log_folder", "seat_fill", "bill_split"]  # held out; never trained on
+MAX_STEPS = 300
 NUM_GENERATIONS = 8
 MAX_COMPLETION = 768
 
@@ -134,7 +134,7 @@ wanted = dict(
     num_generations=NUM_GENERATIONS,
     max_completion_length=MAX_COMPLETION,
     max_steps=MAX_STEPS,
-    learning_rate=1e-5,
+    learning_rate=2e-5,
     logging_steps=5,
     fp16=True,
     report_to="none",
