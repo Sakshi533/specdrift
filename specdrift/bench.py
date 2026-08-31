@@ -29,8 +29,10 @@ def run_benchmark(problems_root: Path, generate, model_name: str, out_dir: Path)
         for problem in problems:
             t0 = time.time()
             records = run_episode(problem, generate)
+            types = {v.number: v.update_type for v in problem.versions}
             for rec in records:
-                row = {"model": model_name, "problem": problem.id, **rec.to_dict()}
+                row = {"model": model_name, "problem": problem.id,
+                       "update_type": types.get(rec.version), **rec.to_dict()}
                 f.write(json.dumps(row) + "\n")
             print(f"  {problem.id}: {time.time() - t0:.1f}s, "
                   f"turn scores {[round(r.score.reward, 2) for r in records]}")

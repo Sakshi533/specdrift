@@ -1,0 +1,7 @@
+{
+  "id": "tax_owed",
+  "title": "Income tax calculator with churning deduction rules",
+  "entry_point": "tax",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

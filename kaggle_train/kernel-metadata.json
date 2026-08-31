@@ -1,0 +1,15 @@
+{
+  "id": "sakshigoswami335/specdrift-grpo-train",
+  "title": "specdrift-grpo-train",
+  "code_file": "grpo_train.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_internet": true,
+  "dataset_sources": ["sakshigoswami335/specdrift-repo"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

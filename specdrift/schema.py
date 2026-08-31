@@ -27,6 +27,7 @@ class Version:
     spec: str          # v1: full spec; v>1: the update message
     tests_path: Path
     reference_path: Path
+    update_type: str | None = None  # taxonomy label from problem.json "update_types" (v2+)
 
 
 @dataclass
@@ -43,6 +44,7 @@ class Problem:
 
 def load_problem(problem_dir: Path) -> Problem:
     meta = json.loads((problem_dir / "problem.json").read_text(encoding="utf-8"))
+    update_types = meta.get("update_types", {})
     versions = []
     for k in range(1, meta["versions"] + 1):
         spec = (problem_dir / f"v{k}_spec.md").read_text(encoding="utf-8")
@@ -51,7 +53,7 @@ def load_problem(problem_dir: Path) -> Problem:
         for p in (tests, ref):
             if not p.exists():
                 raise FileNotFoundError(p)
-        versions.append(Version(k, spec, tests, ref))
+        versions.append(Version(k, spec, tests, ref, update_types.get(str(k))))
     return Problem(meta["id"], meta["title"], meta["entry_point"], versions)
 
 

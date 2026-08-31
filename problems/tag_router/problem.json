@@ -1,0 +1,7 @@
+{
+  "id": "tag_router",
+  "title": "Article tag routing with churning mute semantics",
+  "entry_point": "route",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

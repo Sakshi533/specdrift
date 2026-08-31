@@ -1,0 +1,7 @@
+{
+  "id": "path_squash",
+  "title": "POSIX path normalizer with churning traversal rules",
+  "entry_point": "squash",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "additive"}
+}

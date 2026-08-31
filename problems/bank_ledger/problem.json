@@ -1,0 +1,7 @@
+{
+  "id": "bank_ledger",
+  "title": "Bank ledger with churning overdraft policy",
+  "entry_point": "apply_txns",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

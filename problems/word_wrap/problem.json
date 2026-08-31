@@ -1,0 +1,7 @@
+{
+  "id": "word_wrap",
+  "title": "Greedy word wrap with a long-word walk-back and typographic rules",
+  "entry_point": "wrap",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

@@ -1,0 +1,7 @@
+{
+  "id": "grade_letter",
+  "title": "Letter grades with churning band rules",
+  "entry_point": "grade",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

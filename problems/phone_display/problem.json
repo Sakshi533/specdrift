@@ -1,0 +1,7 @@
+{
+  "id": "phone_display",
+  "title": "US phone number formatter with churning validation and style",
+  "entry_point": "format_phone",
+  "versions": 4,
+  "update_types": {"2": "robustness", "3": "additive", "4": "contradicting"}
+}

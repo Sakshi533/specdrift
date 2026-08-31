@@ -1,0 +1,7 @@
+{
+  "id": "event_scheduler",
+  "title": "Meeting-room booking with churning gap rules",
+  "entry_point": "can_book",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

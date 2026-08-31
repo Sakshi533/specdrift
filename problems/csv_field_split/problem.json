@@ -1,0 +1,7 @@
+{
+  "id": "csv_field_split",
+  "title": "CSV row splitter with evolving quoting and whitespace rules",
+  "entry_point": "split_row",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "additive", "4": "contradicting"}
+}
