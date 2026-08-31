@@ -1,0 +1,7 @@
+{
+  "id": "rate_limiter",
+  "title": "Sliding-window rate limiter with churning quota rules",
+  "entry_point": "allow",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "ambiguous"}
+}

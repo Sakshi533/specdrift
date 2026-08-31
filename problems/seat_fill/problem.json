@@ -1,0 +1,7 @@
+{
+  "id": "seat_fill",
+  "title": "Row seating with churning placement policy",
+  "entry_point": "assign",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

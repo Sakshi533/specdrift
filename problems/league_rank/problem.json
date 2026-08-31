@@ -1,0 +1,7 @@
+{
+  "id": "league_rank",
+  "title": "League standings with churning tiebreak rules",
+  "entry_point": "table",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

@@ -1,0 +1,7 @@
+{
+  "id": "ini_parse",
+  "title": "INI parser with drifting duplicate-key and duplicate-section semantics",
+  "entry_point": "parse",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "ambiguous"}
+}

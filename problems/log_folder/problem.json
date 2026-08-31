@@ -1,0 +1,7 @@
+{
+  "id": "log_folder",
+  "title": "Log continuation folder with drifting repeat-collapse format",
+  "entry_point": "fold",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

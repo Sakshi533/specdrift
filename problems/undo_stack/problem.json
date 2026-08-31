@@ -1,0 +1,7 @@
+{
+  "id": "undo_stack",
+  "title": "Undo/redo stack with churning transaction and error rules",
+  "entry_point": "run",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

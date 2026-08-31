@@ -1,0 +1,7 @@
+{
+  "id": "bill_split",
+  "title": "Bill splitting with churning remainder rules",
+  "entry_point": "split",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "ambiguous"}
+}

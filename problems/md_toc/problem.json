@@ -1,0 +1,7 @@
+{
+  "id": "md_toc",
+  "title": "Markdown TOC extractor with slugs, setext drift, and a tree rewrite",
+  "entry_point": "toc",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

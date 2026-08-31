@@ -1,0 +1,7 @@
+{
+  "id": "discount_engine",
+  "title": "Sequential discount engine with churning percent semantics",
+  "entry_point": "price",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}
