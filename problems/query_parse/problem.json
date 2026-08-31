@@ -1,0 +1,7 @@
+{
+  "id": "query_parse",
+  "title": "Query-string parser with drifting duplicate-key and empty-key semantics",
+  "entry_point": "parse",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "ambiguous"}
+}

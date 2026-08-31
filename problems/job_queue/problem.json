@@ -1,0 +1,7 @@
+{
+  "id": "job_queue",
+  "title": "Priority job queue with churning anti-starvation rules",
+  "entry_point": "order",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "ambiguous", "4": "interface"}
+}

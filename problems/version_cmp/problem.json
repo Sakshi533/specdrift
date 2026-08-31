@@ -1,0 +1,7 @@
+{
+  "id": "version_cmp",
+  "title": "Version comparator with drifting pre-release tag semantics",
+  "entry_point": "cmp",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

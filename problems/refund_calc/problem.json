@@ -1,0 +1,7 @@
+{
+  "id": "refund_calc",
+  "title": "Return refunds with a churning restocking fee",
+  "entry_point": "refund",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

@@ -1,0 +1,7 @@
+{
+  "id": "elo_update",
+  "title": "Elo rating updates with churning K-factor rules",
+  "entry_point": "update",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

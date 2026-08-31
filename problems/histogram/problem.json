@@ -1,0 +1,7 @@
+{
+  "id": "histogram",
+  "title": "Histogram binning with churning edge conventions",
+  "entry_point": "bins",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "ambiguous"}
+}

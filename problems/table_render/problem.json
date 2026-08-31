@@ -1,0 +1,7 @@
+{
+  "id": "table_render",
+  "title": "Plain-text table renderer with drifting alignment, separator, and return shape",
+  "entry_point": "render",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

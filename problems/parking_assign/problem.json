@@ -1,0 +1,7 @@
+{
+  "id": "parking_assign",
+  "title": "Parking lot assignment with churning fit policy",
+  "entry_point": "assign",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

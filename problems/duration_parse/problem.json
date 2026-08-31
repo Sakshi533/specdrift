@@ -1,0 +1,7 @@
+{
+  "id": "duration_parse",
+  "title": "Duration-string parser with drifting term-order and validity rules",
+  "entry_point": "secs",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}

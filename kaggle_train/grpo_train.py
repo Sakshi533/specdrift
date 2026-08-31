@@ -34,8 +34,9 @@ print("[data] repo root:", REPO, "->", sorted(p.name for p in REPO.iterdir()))
 sys.path.insert(0, str(REPO))
 
 MODEL = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
-EVAL_IDS = ["slugify", "word_wrap", "log_folder", "seat_fill", "bill_split"]  # held out; never trained on
-MAX_STEPS = 150  # optimizer steps; 8 completions each. Long prompts -> ~80s/step on T4
+EVAL_IDS = ["slugify", "word_wrap", "log_folder", "seat_fill", "bill_split",
+            "cache_lru", "query_parse", "shift_pay"]  # held out; never trained on
+MAX_STEPS = 400  # optimizer steps; 8 completions each (~33s/step with grad ckpt)
 NUM_GENERATIONS = 8
 MAX_COMPLETION = 768
 
@@ -96,30 +97,47 @@ def spec_reward(completions, tests_path, version, **kwargs):
     return rewards
 
 
+EVAL_PASSES = [("greedy", None), ("s0", 0), ("s1", 1)]  # greedy + 2 sampled seeds
+
+
 def evaluate(model, tokenizer, tag):
-    """Multi-turn eval on held-out problems (the model sees its OWN prior replies)."""
+    """Multi-turn eval on held-out problems (the model sees its OWN prior replies).
+
+    Three decoding passes per problem give a spread, not just a point estimate."""
     model.eval()
 
-    def generate(messages):
-        text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-        inputs = tokenizer(text, return_tensors="pt").to(model.device)
-        with torch.no_grad():
-            out = model.generate(**inputs, max_new_tokens=MAX_COMPLETION, do_sample=False,
-                                 pad_token_id=tokenizer.pad_token_id or tokenizer.eos_token_id)
-        return tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
+    def make_generate(seed):
+        def generate(messages):
+            text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+            inputs = tokenizer(text, return_tensors="pt").to(model.device)
+            kwargs = dict(max_new_tokens=MAX_COMPLETION,
+                          pad_token_id=tokenizer.pad_token_id or tokenizer.eos_token_id)
+            if seed is None:
+                kwargs["do_sample"] = False
+            else:
+                torch.manual_seed(seed)
+                kwargs.update(do_sample=True, temperature=0.7, top_p=0.95)
+            with torch.no_grad():
+                out = model.generate(**inputs, **kwargs)
+            return tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
+        return generate
 
     rows = []
-    for p in eval_problems:
-        for rec in run_episode(p, generate):
-            rows.append({"tag": tag, "problem": p.id, **rec.to_dict()})
-        print(f"[eval:{tag}] {p.id}: "
-              f"{[(r['version'], round(r['current_pass'] / max(1, r['current_total']), 2)) for r in rows if r['problem'] == p.id]}")
+    for pass_name, seed in EVAL_PASSES:
+        for p in eval_problems:
+            for rec in run_episode(p, make_generate(seed)):
+                rows.append({"tag": tag, "pass": pass_name, "problem": p.id, **rec.to_dict()})
+        pr = [r for r in rows if r["pass"] == pass_name]
+        cur = sum(r["current_pass"] for r in pr) / max(1, sum(r["current_total"] for r in pr))
+        carried = sum(r["carried_total"] for r in pr)
+        reg = 1 - sum(r["carried_pass"] for r in pr) / carried if carried else 0.0
+        print(f"[eval:{tag}:{pass_name}] current_pass={cur:.3f} regression={reg:.3f}")
     out_path = WORK / f"eval_{tag}.jsonl"
     out_path.write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
     cur = sum(r["current_pass"] for r in rows) / max(1, sum(r["current_total"] for r in rows))
     carried = sum(r["carried_total"] for r in rows)
     reg = 1 - sum(r["carried_pass"] for r in rows) / carried if carried else 0.0
-    print(f"[eval:{tag}] AGGREGATE current_pass={cur:.3f} regression={reg:.3f}")
+    print(f"[eval:{tag}] AGGREGATE (all passes) current_pass={cur:.3f} regression={reg:.3f}")
     return cur, reg
 
 

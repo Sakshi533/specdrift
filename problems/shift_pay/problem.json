@@ -1,0 +1,7 @@
+{
+  "id": "shift_pay",
+  "title": "Weekly shift pay with churning night/overtime rules",
+  "entry_point": "pay",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

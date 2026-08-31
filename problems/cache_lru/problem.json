@@ -1,0 +1,7 @@
+{
+  "id": "cache_lru",
+  "title": "LRU cache trace with churning recency rules",
+  "entry_point": "trace",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "interface"}
+}

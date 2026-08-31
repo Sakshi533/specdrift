@@ -1,0 +1,7 @@
+{
+  "id": "elevator_pick",
+  "title": "Elevator dispatch with churning eligibility and tiebreaks",
+  "entry_point": "pick",
+  "versions": 4,
+  "update_types": {"2": "additive", "3": "contradicting", "4": "robustness"}
+}
