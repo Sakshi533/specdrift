@@ -54,7 +54,28 @@ kaggle_smoke/       GRPO feasibility kernel (Qwen2.5-Coder-0.5B + LoRA on a T4)
       eval → GRPO on 9 train problems → post-eval on 3 held-out problems.
       Baseline Qwen2.5-Coder-1.5B on held-out: 67% current-spec pass,
       **68% regression rate** — large headroom for training
-- [ ] Scale to ~30-40 problems (add `ambiguous` type; raise difficulty —
-      bank_ledger is already saturated by a 1.5B model)
+- [x] 21 problem families (~600 tests) across all five update types,
+      including `ambiguous`
+- [x] First full GRPO run — see results below
 - [ ] Frontier model evals (free tiers: Gemini, Groq)
-- [ ] Full GRPO run (~300 steps ≈ 2h) + before/after comparison
+- [ ] Longer training + larger eval split (current result is one seed on a
+      5-problem holdout — directional, not definitive)
+
+## First training result (GRPO, Qwen2.5-Coder-1.5B, one Kaggle T4, 82 min)
+
+150 GRPO steps (LoRA r=16, 8 rollouts/step, executable-test reward:
+0.6·current-spec + 0.4·(1−regression)) on 16 problems; evaluated multi-turn
+and greedy on 5 held-out problems (`slugify`, `word_wrap`, `log_folder`,
+`seat_fill`, `bill_split`), raw records in `docs/results/`:
+
+| metric (holdout, all turns) | before | after |
+|---|---|---|
+| current-spec pass rate | 46.3% | 45.1% |
+| **regression rate** (still-valid old constraints broken) | **68.0%** | **59.8%** |
+
+Training reward rose ~0.50 → ~0.66, and the transfer shows up as the model
+**breaking fewer carried constraints** (−8.2 pts) while new-constraint
+implementation stayed flat — consistent with the reward's regression term
+being the easier signal to learn. Honest caveats: one seed, small holdout,
+greedy decoding; the next iteration targets longer training and a bigger
+eval split before claiming more.
