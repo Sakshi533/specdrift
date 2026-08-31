@@ -1,0 +1,6 @@
+{
+  "id": "cart_total",
+  "title": "Shopping cart total with churning discount rules",
+  "entry_point": "cart_total",
+  "versions": 4
+}

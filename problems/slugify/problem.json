@@ -1,0 +1,6 @@
+{
+  "id": "slugify",
+  "title": "URL slug generator with churning formatting rules",
+  "entry_point": "slugify",
+  "versions": 4
+}

@@ -1,0 +1,9 @@
+[project]
+name = "specdrift"
+version = "0.1.0"
+description = "Executable benchmark + RL environment for mid-task requirement churn in code"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+packages = ["specdrift"]

@@ -1,0 +1,6 @@
+{
+  "id": "merge_sorted_lists",
+  "title": "Merge two sorted lists",
+  "entry_point": "merge",
+  "versions": 4
+}

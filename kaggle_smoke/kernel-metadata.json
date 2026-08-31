@@ -1,0 +1,15 @@
+{
+  "id": "sakshigoswami335/specdrift-grpo-smoke",
+  "title": "specdrift-grpo-smoke",
+  "code_file": "grpo_smoke.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
