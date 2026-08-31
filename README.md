@@ -49,7 +49,12 @@ kaggle_smoke/       GRPO feasibility kernel (Qwen2.5-Coder-0.5B + LoRA on a T4)
 - [x] 3 pilot problem families × 4 versions (all rules green)
 - [x] GRPO-on-T4 smoke test: 10 steps in 150s (15s/step), peak 4.7 GB VRAM,
       Qwen2.5-Coder-0.5B + LoRA, TRL 1.12, executable-test rewards flowing
-- [ ] Pilot model evals (free tiers: Gemini, Groq, self-hosted Qwen)
-- [ ] Scale to ~40 problems across an update-type taxonomy
-      (additive / contradicting / retracting / ambiguous)
-- [ ] GRPO training run + before/after eval
+- [x] 12 problem families × 4 versions across the update-type taxonomy
+- [x] Training pipeline pilot on T4 (20 steps, 15 min end-to-end): baseline
+      eval → GRPO on 9 train problems → post-eval on 3 held-out problems.
+      Baseline Qwen2.5-Coder-1.5B on held-out: 67% current-spec pass,
+      **68% regression rate** — large headroom for training
+- [ ] Scale to ~30-40 problems (add `ambiguous` type; raise difficulty —
+      bank_ledger is already saturated by a 1.5B model)
+- [ ] Frontier model evals (free tiers: Gemini, Groq)
+- [ ] Full GRPO run (~300 steps ≈ 2h) + before/after comparison
