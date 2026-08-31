@@ -28,10 +28,10 @@ def main():
             "licenses": [{"name": "CC0-1.0"}],
         }))
         try:
-            print(api.dataset_create_version(str(staging), version_notes="update", quiet=True))
+            print(api.dataset_create_version(str(staging), version_notes="update", quiet=True, dir_mode="zip"))
         except Exception as e:
             print(f"create_version failed ({e}); trying first-time create")
-            print(api.dataset_create_new(str(staging), public=False, quiet=True))
+            print(api.dataset_create_new(str(staging), public=False, quiet=True, dir_mode="zip"))
 
 
 if __name__ == "__main__":

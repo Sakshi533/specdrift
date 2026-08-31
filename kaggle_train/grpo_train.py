@@ -22,12 +22,19 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 REPO = Path("/kaggle/input/specdrift-repo")
+if not (REPO / "specdrift" / "schema.py").exists():
+    # dir_mode="zip" uploads can nest; locate the package wherever it landed
+    for cand in Path("/kaggle/input").rglob("schema.py"):
+        if cand.parent.name == "specdrift":
+            REPO = cand.parent.parent
+            break
 WORK = Path("/kaggle/working")
+print("[data] repo root:", REPO, "->", sorted(p.name for p in REPO.iterdir()))
 sys.path.insert(0, str(REPO))
 
 MODEL = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
 EVAL_IDS = ["slugify", "bank_ledger", "word_wrap"]  # held out; never trained on
-MAX_STEPS = 300
+MAX_STEPS = 20      # PILOT run; set ~300 for the real run
 NUM_GENERATIONS = 8
 MAX_COMPLETION = 768
 
