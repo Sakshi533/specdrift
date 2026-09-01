@@ -54,12 +54,9 @@ kaggle_smoke/       GRPO feasibility kernel (Qwen2.5-Coder-0.5B + LoRA on a T4)
       eval → GRPO on 9 train problems → post-eval on 3 held-out problems.
       Baseline Qwen2.5-Coder-1.5B on held-out: 67% current-spec pass,
       **68% regression rate** — large headroom for training
-- [x] 21 problem families (~600 tests) across all five update types,
-      including `ambiguous`
-- [x] First full GRPO run — see results below
-- [ ] Frontier model evals (free tiers: Gemini, Groq)
-- [ ] Longer training + larger eval split (current result is one seed on a
-      5-problem holdout — directional, not definitive)
+- [x] 33 problem families (~900 tests) across all five update types
+- [x] Two full GRPO runs — see results below
+- [x] Frontier-tier model evals on free API tiers — see leaderboard
 
 ## Training results (GRPO, Qwen2.5-Coder-1.5B + LoRA, one free Kaggle T4)
 
@@ -93,3 +90,28 @@ churn-handling — separating those is future work.
 Run 1 (150 steps, 5-problem holdout, greedy only) showed the same direction
 smaller: regression 68.0→59.8, current-pass flat. Training reward in both
 runs was still climbing at cutoff.
+
+## Leaderboard (full benchmark, 33 problems, greedy decoding)
+
+| model | current-spec pass | regression rate |
+|---|---|---|
+| gemini-3.5-flash-lite | 95.1% | 3.3% |
+| qwen3.8-27B (Groq) | 95.1% | 5.7% |
+| gpt-oss-120B (Groq)* | 90.3% | 13.1% |
+| Qwen2.5-Coder-1.5B (holdout only) | 44.6% | 60.7% |
+| &nbsp;&nbsp;+ 400-step GRPO (holdout only) | 47.5% | 51.4% |
+| "stubborn" floor (never updates code) | ~38% | 50% by turn 4 |
+
+\* partial: 28/33 problems (free-tier daily quota); 1.5B rows are the
+holdout-8 greedy pass, not directly comparable to full-benchmark rows.
+
+Two honest readings. First, **frontier-tier models have largely solved
+function-level spec churn** — the failure mode that cripples a 1.5B model
+(78% regression) is a ~3–6% tail for them, with one systematic exception:
+**interface-change updates, where both top models break 43% of carried
+constraints**. Second, the benchmark's dynamic range currently lives between
+small and frontier models — making it a measure of *how far* small open
+models are from frontier churn-robustness, and (via the GRPO result) how much
+of that gap verifiable-reward RL can close on free compute. Hardening the
+benchmark against frontier saturation (repository-scale problems, longer
+update chains) is the v2 direction.

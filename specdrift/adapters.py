@@ -41,7 +41,8 @@ def make_adapter(provider: str, model: str, temperature: float = 0.0,
         }).encode("utf-8")
         req = urllib.request.Request(
             cfg["url"], data=body,
-            headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"},
+            headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}",
+                     "User-Agent": "specdrift-bench/0.1"},  # Groq's CDN blocks urllib's default UA
         )
         for attempt in range(max_retries):
             try:
