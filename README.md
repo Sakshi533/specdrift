@@ -61,21 +61,35 @@ kaggle_smoke/       GRPO feasibility kernel (Qwen2.5-Coder-0.5B + LoRA on a T4)
 - [ ] Longer training + larger eval split (current result is one seed on a
       5-problem holdout — directional, not definitive)
 
-## First training result (GRPO, Qwen2.5-Coder-1.5B, one Kaggle T4, 82 min)
+## Training results (GRPO, Qwen2.5-Coder-1.5B + LoRA, one free Kaggle T4)
 
-150 GRPO steps (LoRA r=16, 8 rollouts/step, executable-test reward:
-0.6·current-spec + 0.4·(1−regression)) on 16 problems; evaluated multi-turn
-and greedy on 5 held-out problems (`slugify`, `word_wrap`, `log_folder`,
-`seat_fill`, `bill_split`), raw records in `docs/results/`:
+Reward = executable tests only: 0.6·current-spec pass + 0.4·(1−regression).
+Eval is multi-turn on held-out problems (the model sees its own prior
+replies), three decoding passes (greedy + 2 sampled seeds @ T=0.7). Raw
+records in `docs/results/`.
 
-| metric (holdout, all turns) | before | after |
-|---|---|---|
-| current-spec pass rate | 46.3% | 45.1% |
-| **regression rate** (still-valid old constraints broken) | **68.0%** | **59.8%** |
+**Run 2 — 400 steps, 3.5 h, 25 train / 8 holdout problems:**
 
-Training reward rose ~0.50 → ~0.66, and the transfer shows up as the model
-**breaking fewer carried constraints** (−8.2 pts) while new-constraint
-implementation stayed flat — consistent with the reward's regression term
-being the easier signal to learn. Honest caveats: one seed, small holdout,
-greedy decoding; the next iteration targets longer training and a bigger
-eval split before claiming more.
+| holdout metric (96 episode-turns) | before | after | Δ |
+|---|---|---|---|
+| current-spec pass rate | 30.5% | 43.6% | **+13.1** |
+| regression rate (old constraints broken) | 78.1% | 60.0% | **−18.1** |
+
+Per decoding pass — before → after (current / regression):
+greedy 44.6→47.5 / 60.7→51.4 · seed-0 25.2→52.5 / 88.6→42.9 ·
+seed-1 21.6→30.9 / 85.0→85.7. The biggest gains are under sampling — the
+base model falls apart at T=0.7 and training largely fixes that — but the
+seed-1 regression staying flat shows the spread is real; treat the aggregate
+as the estimate and the passes as its error bar.
+
+By update type (current pass / regression, after training): robustness
+79.5/53.3 · contradicting 25.8/56.9 · additive 23.0/53.1 · ambiguous
+20.8/84.2 — ambiguous updates barely improved and remain the failure mode;
+interface updates show 0% regression by construction (a return-shape change
+re-pins all constraints as current). Turn-1 (fresh spec, no churn) also rose
+56.8→76.6, so part of the gain is general task competence, not only
+churn-handling — separating those is future work.
+
+Run 1 (150 steps, 5-problem holdout, greedy only) showed the same direction
+smaller: regression 68.0→59.8, current-pass flat. Training reward in both
+runs was still climbing at cutoff.
