@@ -66,14 +66,35 @@ Turn-1 performance also rose (56.8→76.6), meaning part of the gain is general
 competence rather than churn-handling specifically; disentangling the two
 (e.g. a turn-1-only training control) is the clearest next experiment.
 
+## Where frontier models stand
+
+Running frontier-tier models through the full benchmark (greedy, free API
+tiers) reframes the picture: gemini-3.5-flash-lite scores 95.1% current-spec
+pass with 3.3% regression, qwen3.8-27B 95.1%/5.7%, gpt-oss-120B 88.7%/15.9%.
+Function-level spec churn is largely a solved problem at that scale — **with
+one systematic exception: interface-change updates, where the two top models
+break 42.9% of carried constraints and gpt-oss-120B breaks 71.4%**. When a
+return shape changes, even frontier-tier models lose behavioral constraints
+they were supposed to preserve. gpt-oss-120B also shows genuine multi-turn
+degradation (96.6% → 83.8% current-pass across turns).
+
+This is the honest headline for the benchmark: its dynamic range lives in
+the gap between small open models (78% regression) and frontier ones (~3–6%),
+which makes it (a) a calibrated measure of how far small models are from
+frontier churn-robustness, (b) evidence that verifiable-reward RL closes part
+of that gap on free compute, and (c) saturated at the frontier for
+function-level tasks — repository-scale problems and longer update chains are
+the v2 direction for challenging top models.
+
 ## Honest limitations
 
 One base model, one training seed, 8 holdout families, 3 decoding passes.
 The sandbox is a subprocess with a timeout, not a hardened jail. Problems are
-function-level Python, not repository-scale. Frontier-model comparisons are
-pending (free-tier API evals). None of this blocks the core claims: the
-failure mode is real, measurable, and partially trainable away with
-verifiable rewards on free compute.
+function-level Python, not repository-scale — sufficient to expose the
+small-model failure mode, insufficient to challenge frontier models except on
+interface churn. None of this blocks the core claims: the failure mode is
+real, measurable, and partially trainable away with verifiable rewards on
+free compute.
 
 ## Reproduce
 

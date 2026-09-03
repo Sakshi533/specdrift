@@ -97,19 +97,22 @@ runs was still climbing at cutoff.
 |---|---|---|
 | gemini-3.5-flash-lite | 95.1% | 3.3% |
 | qwen3.8-27B (Groq) | 95.1% | 5.7% |
-| gpt-oss-120B (Groq)* | 90.3% | 13.1% |
+| gpt-oss-120B (Groq) | 88.7% | 15.9% |
 | Qwen2.5-Coder-1.5B (holdout only) | 44.6% | 60.7% |
 | &nbsp;&nbsp;+ 400-step GRPO (holdout only) | 47.5% | 51.4% |
 | "stubborn" floor (never updates code) | ~38% | 50% by turn 4 |
 
-\* partial: 28/33 problems (free-tier daily quota); 1.5B rows are the
-holdout-8 greedy pass, not directly comparable to full-benchmark rows.
+1.5B rows are the holdout-8 greedy pass, not directly comparable to
+full-benchmark rows.
 
 Two honest readings. First, **frontier-tier models have largely solved
 function-level spec churn** — the failure mode that cripples a 1.5B model
 (78% regression) is a ~3–6% tail for them, with one systematic exception:
-**interface-change updates, where both top models break 43% of carried
-constraints**. Second, the benchmark's dynamic range currently lives between
+**interface-change updates, where the top models break 43% of carried
+constraints and gpt-oss-120B breaks 71%**. gpt-oss-120B also degrades
+visibly across turns (96.6% → 83.8% current-pass, regression climbing to
+20.2% by turn 4) — drift-fragility is not exclusive to small models.
+Second, the benchmark's dynamic range currently lives between
 small and frontier models — making it a measure of *how far* small open
 models are from frontier churn-robustness, and (via the GRPO result) how much
 of that gap verifiable-reward RL can close on free compute. Hardening the
